@@ -1,0 +1,191 @@
+
+协议
+S —— C： 欢迎                                                                                100
+
+C —— S :  playerID                                                                          001
+S —— C：地图信息（银行位置，警察局位置）。自己的角色，小偷位置                                     101
+
+T —— S ： next step.                                                                        201
+S —— T ： 警察位置更新，银行信息更新                                                            401
+
+P —— S： 类型（乘车or步行）                                                                   301
+S —— P： 所有警察交通方式信息汇总                                                              102
+
+P —— S :  小偷可能的位置（格式 : 位置, 概率） 给出4个                                           302
+S —— P :  所有警察推断信息汇总                                                                103
+
+P —— S : 所有警察的行动建议                                                                   303
+S —— P：所有建议信息汇总                                                                      104
+
+P —— S：建议采用投票                                                                         304
+S —— P：投票结果                                                                             105
+
+P —— S：next step                                                                           305
+S —— P：警察位置更新，银行信息更新，踪迹信息（如果小偷在警察视线范围内）                             106
+
+
+MsgID: 100
+Content: S —— C： 欢迎
+Details:
+{
+    "MsgID" : 100,
+    "Msg"   : "welcome"
+}
+
+MsgID:001
+content: C —— S :  playerID                                                                          001
+Details:
+{
+    "MsgID" : 001,
+    "Msg"   : 1001
+}
+
+
+MsgID:001
+content: S —— C：地图信息（银行位置，警察局位置）。自己的角色，小偷位置                                     101
+Details:
+{
+    "MsgID" : 101,
+    "Msg"   :
+    {
+        "map_info" :
+        {
+            "size"          : "24",
+            "nodes"         : ["(0,0),true,true,true,true,0", "(0,1),true,true,true,true,1", ......, "(23,23)true,false,true,false,3"]
+            police_station: : "(4,5)",
+            thief_station   : "(8,9)"
+        }
+    }
+}
+
+MsgID:201
+content: T —— S ： next step.                                                                        201
+Details:
+{
+    "MsgID"     :  201,
+    "Msg"       :  "(2,3)"
+}
+
+
+MsgID:301
+content: P —— S： 类型（乘车or步行）                                                                   301
+Details:
+{
+    "MsgID"     : 301,
+    "Msg"       : "walk"(or car)
+}
+
+MsgID:102
+content:S —— P： 所有警察交通方式信息汇总                                                              102
+Details:
+{
+    "MsgID"     : 102,
+    "Msg"       : ["walk, walk, walk, walk, walk"]
+}
+
+MsgID: 302
+content:P —— S :  小偷可能的位置（格式 : 位置, 概率） 给出4个                                           302
+Details:
+{
+    "MsgID"     : 302,
+    "Msg"       : "(1,1)100 (2,2)80 (1,2)70 (12,3)0"
+}
+
+
+MsgID: 103
+content:S —— P :  所有警察推断信息汇总                                                                103
+Details:
+{
+    "MsgID"     : 103,
+    "Msg"       : ["(1,1)100 (2,2)80 (1,2)70 (12,3)0",
+                    "(1,1)100 (2,2)80 (1,2)70 (12,3)0",
+                    "(1,1)100 (2,2)80 (1,2)70 (12,3)0",
+                    "(1,1)100 (2,2)80 (1,2)70 (12,3)0",
+                    "(1,1)100 (2,2)80 (1,2)70 (12,3)0"]
+}
+
+MsgID: 104
+content: P —— S : 所有警察的行动建议                                                                   303
+Details:
+{
+    "MsgID"     : 303,
+    "Msg"       : ["(10,10)","(10,10)","(10,10)","(10,10)","(10,10)"]
+}
+
+MsgID: 104
+content: S —— P：所有建议信息汇总                                                                      104
+Details:
+{
+    "MsgID"     : 104,
+    "Msg"       :
+    {
+         "playerid1" : ["(10,10)","(10,10)","(10,10)","(10,10)","(10,10)"],
+         "playerid2" : ["(10,10)","(10,10)","(10,10)","(10,10)","(10,10)"],
+         "playerid3" : ["(10,10)","(10,10)","(10,10)","(10,10)","(10,10)"],
+         "playerid4" : ["(10,10)","(10,10)","(10,10)","(10,10)","(10,10)"],
+         "playerid5" : ["(10,10)","(10,10)","(10,10)","(10,10)","(10,10)"]
+    }
+}
+
+MsgID: 304
+content: P —— S：建议采用投票                                                                         304
+Details:
+{
+    "MsgID"     : 304,
+    "Msg"       : ["playerid1","playerid2","playerid3","playerid4","playerid5"]
+}
+
+
+MsgID: 105
+content: S —— P：投票结果                                                                             105
+Details:
+{
+    "MsgID"     : 304,
+    "Msg"       :
+        {
+            "playerid1" : 4,
+            "playerid2" : 1,
+            "playerid3" : 0,
+            "playerid4" : 0,
+            "playerid5" : 0,
+        }
+}
+
+MsgID: 305
+content:P —— S：next step                                                                           305
+Details:
+{
+    "MsgID"     :305,
+    "Msg"       :(2,3)
+}
+
+MsgID : 106
+content: S —— P：警察位置更新，银行信息更新，踪迹信息（如果小偷在警察视线范围内）                            106
+Details:
+{
+    "MsgID"     :305,
+    "Msg"       :
+        {
+            police_position:
+            {
+                "playerid1" : "(10,10)",
+                "playerid2" : "(10,10)",
+                "playerid3" : "(10,10)",
+                "playerid4" : "(10,10)",
+                "playerid5" : "(10,10)"
+            },
+            "bank" :
+            {
+                "bank1" : "(2,3)1000",
+                "bank2" : "(2,3)1000",
+                "bank3" : "(2,3)1000",
+                "bank4" : "(2,3)1000",
+                "bank5" : "(2,3)1000",
+                "bank6" : "(2,3)1000"
+            }
+            "trace" : "x,y" (if exist)
+        }
+}
+
+
+
