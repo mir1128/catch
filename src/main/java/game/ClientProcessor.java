@@ -17,7 +17,6 @@ public class ClientProcessor implements Observer {
     protected ClientProcessor() {
         handlers = new Vector<ProtocolMessageHandler>();
         ClientHandlerRegister.getInstance().register(this);
-        handlers = new Vector<ProtocolMessageHandler>();
     }
 
     public static ClientProcessor getInstance(){

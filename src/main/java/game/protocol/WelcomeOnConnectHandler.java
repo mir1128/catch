@@ -5,19 +5,18 @@ import network.ClientMessageHandler;
 import network.SpecialMessageID;
 
 public class WelcomeOnConnectHandler implements ProtocolMessageHandler {
-    private static final String MsgID = "001";
-
-    public WelcomeOnConnectHandler() {
-    }
+    public static final String MsgID = "100";
 
     @Override
     public boolean handle(ClientMessageHandler clientMessageHandler, String command) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("MsgID", WelcomeOnConnectHandler.MsgID);
-        jsonObject.put("Msg", "welcome");
+        if (command.equals(SpecialMessageID.ON_CONNECTED)){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("MsgID", WelcomeOnConnectHandler.MsgID);
+            jsonObject.put("Msg", "welcome");
 
-        clientMessageHandler.sendClientMessage(jsonObject.toString());
-        return true;
+            clientMessageHandler.sendClientMessage(jsonObject.toString());
+            return true;
+        }
+        return false;
     }
-
 }

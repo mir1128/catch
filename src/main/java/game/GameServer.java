@@ -1,13 +1,13 @@
 package game;
 
-import game.protocol.WelcomeOnConnectHandler;
+import game.protocol.*;
 import map.MapGenerator;
 import map.MapInfo;
 import map.TextMapLoaderGenerator;
 import network.Server;
+import org.apache.commons.cli.*;
 import org.quickserver.net.AppException;
 
-import java.util.HashMap;
 
 public class GameServer {
     MapGenerator mapGenerator;
@@ -20,9 +20,9 @@ public class GameServer {
         mapInfo = mapGenerator.generate(11);
         server = new Server();
         server.setClientCommandHandler("network.ClientMessageHandler");
+        server.setPort(4321);
 
-        ClientProcessor.getInstance().RegisterProtocolHandler(new WelcomeOnConnectHandler());
-
+        realistAllHandlers();
     }
 
     public void  gameStart() throws AppException {
@@ -31,9 +31,18 @@ public class GameServer {
 
     private void realistAllHandlers(){
         ClientProcessor.getInstance().RegisterProtocolHandler(new WelcomeOnConnectHandler());
+        ClientProcessor.getInstance().RegisterProtocolHandler(new LostConnectHandler());
+        ClientProcessor.getInstance().RegisterProtocolHandler(new PlayerIDInformationHandler());
+        ClientProcessor.getInstance().RegisterProtocolHandler(new ThiefMovementHandler());
+        ClientProcessor.getInstance().RegisterProtocolHandler(new PoliceTrafficTypeHandler());
+        ClientProcessor.getInstance().RegisterProtocolHandler(new PoliceDeduceInformationHandler());
+        ClientProcessor.getInstance().RegisterProtocolHandler(new PoliceProposalHandler());
+        ClientProcessor.getInstance().RegisterProtocolHandler(new PoliceVoteInformationHandler());
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
+        GameRoleConfig gameRoleConfig = GameCommandLineParser.parseCommandLine(args);
+
         GameServer gameServer = new GameServer();
         gameServer.init();
 
@@ -43,4 +52,5 @@ public class GameServer {
             e.printStackTrace();
         }
     }
+
 }
