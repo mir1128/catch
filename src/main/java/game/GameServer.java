@@ -1,9 +1,7 @@
 package game;
 
 import game.protocol.*;
-import map.MapGenerator;
-import map.MapInfo;
-import map.TextMapLoaderGenerator;
+import map.*;
 import network.Server;
 import org.apache.commons.cli.*;
 import org.quickserver.net.AppException;
@@ -15,9 +13,14 @@ public class GameServer {
     Server  server;
 
     public void init(){
+//        mapGenerator = new TextMapLoaderGenerator("src/main/resources/m1", new MapInfo());
+        MapInfo mapInfo = new MapInfo();
+        mapGenerator = new MapAutoGenerator();
+        mapGenerator.setMapInfo(mapInfo);
+        mapGenerator.generate(25);
 
-        mapGenerator = new TextMapLoaderGenerator("src/main/resources/m1", new MapInfo());
-        mapInfo = mapGenerator.generate(11);
+        MapHolder.getInstance().setMapInfo(mapInfo);
+
         server = new Server();
         server.setClientCommandHandler("network.ClientMessageHandler");
         server.setPort(4321);
@@ -41,7 +44,7 @@ public class GameServer {
     }
 
     public static void main(String[] args) throws ParseException {
-        GameRoleConfig gameRoleConfig = GameCommandLineParser.parseCommandLine(args);
+        GameCommandLineParser.parseCommandLine(args);
 
         GameServer gameServer = new GameServer();
         gameServer.init();

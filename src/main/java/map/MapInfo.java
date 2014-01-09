@@ -3,9 +3,34 @@ package map;
 public class MapInfo {
     public final static int POLICE_STATION = 1;
     public final static int BANK = 2;
+    public final static int THIEF_START = 3;
 
     private Cell    cells[][];
     private int N;
+
+    public String getPoliceStationPosition() {
+        return policeStationPosition;
+    }
+
+    public void setPoliceStationPosition(String policeStationPosition) {
+        this.policeStationPosition = policeStationPosition;
+    }
+
+    public String getThiefPosition() {
+        return thiefPosition;
+    }
+
+    public void setThiefPosition(String thiefPosition) {
+        this.thiefPosition = thiefPosition;
+    }
+
+    private String policeStationPosition;
+    private String thiefPosition;
+
+    public void setCellType(int row, int column, int character){
+        cells[row][column].setCharacter(character);
+    }
+
 
     public MapInfo() {
     }
@@ -33,42 +58,24 @@ public class MapInfo {
         return N;
     }
 
-    //[1,2]=(1,[1,2],[2,2],[1,1],[0,2]);
+    //(0,0),true,true,true,true,0"
     public String toMazeMap(){
         StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("[");
         for (int row = 0; row < getMapSize(); ++row){
             for (int column = 0; column < getMapSize(); ++column){
-                stringBuffer.append("[" + row + "," + column + "]=");
-                stringBuffer.append("(");
+                stringBuffer.append("(" + row + "," + column + "),");
+
+                stringBuffer.append(Boolean.toString(getCell(row,column).isEast())+",");
+                stringBuffer.append(Boolean.toString(getCell(row,column).isSouth())+",");
+                stringBuffer.append(Boolean.toString(getCell(row,column).isWest())+",");
+                stringBuffer.append(Boolean.toString(getCell(row,column).isNorth())+",");
+
                 stringBuffer.append(""+ getCell(row, column).getCharacter());
-
-                if (getCell(row, column).isEast() && isValid(row, column+1)){
-                    if (getCell(row,column+1).isWest()){
-                        stringBuffer.append("["+row+","+(column+1)+"],");
-                    }
-                }
-
-                if (getCell(row, column).isSouth() && isValid(row+1, column)){
-                    if (getCell(row+1,column).isWest()){
-                        stringBuffer.append("["+(row+1)+","+(column)+"],");
-                    }
-                }
-
-                if (getCell(row, column).isWest() && isValid(row, column-1)){
-                    if (getCell(row,column-1).isWest()){
-                        stringBuffer.append("["+row+","+(column-1)+"],");
-                    }
-                }
-
-                if (getCell(row, column).isEast() && isValid(row-1, column)){
-                    if (getCell(row-1,column).isWest()){
-                        stringBuffer.append("["+(row-1)+","+(column)+"],");
-                    }
-                }
-
-                stringBuffer.append(")\r\n");
+                stringBuffer.append(" ");
             }
         }
+        stringBuffer.append("],");
         return stringBuffer.toString();
     }
 

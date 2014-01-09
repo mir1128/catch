@@ -16,7 +16,48 @@ public class MapAutoGenerator implements MapGenerator{
         init();
         Random random = new Random();
         generate(1, 1);
+
+        generatePoliceStationPosition();
+        generateBankPosition();
+        generateThiefPosition();
         return mapInfo;
+    }
+
+    private void generateThiefPosition() {
+        Random random = new Random();
+        int pos = random.nextInt(4);
+
+        if (pos == 0){
+            mapInfo.setCellType(0,0,MapInfo.THIEF_START);
+            mapInfo.setThiefPosition("(0,0)");
+        }else if (pos == 1){
+            mapInfo.setCellType(mapInfo.getMapSize()-1, 0, MapInfo.THIEF_START);
+            mapInfo.setThiefPosition("("+(mapInfo.getMapSize()-1) +","+"0)");
+        }else if (pos==2){
+            mapInfo.setCellType(0, mapInfo.getMapSize()-1, MapInfo.THIEF_START);
+            mapInfo.setThiefPosition("(0,"+(mapInfo.getMapSize()-1)+")");
+        }else {
+            mapInfo.setCellType(mapInfo.getMapSize()-1, mapInfo.getMapSize()-1, MapInfo.THIEF_START);
+            mapInfo.setThiefPosition("("+(mapInfo.getMapSize()-1)+","+(mapInfo.getMapSize()-1)+")");
+        }
+    }
+
+    private void generateBankPosition() {
+        int n = mapInfo.getMapSize();
+        int rowStep = n/4;
+        int columnStep = n/6;
+
+        for (int x = 0; x < 2; ++x){
+            for (int y = 0; y < 3; ++y){
+                mapInfo.setCellType(rowStep + x*(n/2), columnStep+y*(n/3), MapInfo.BANK);
+            }
+        }
+    }
+
+    private void generatePoliceStationPosition() {
+        int center = mapInfo.getMapSize()/2;
+        mapInfo.setCellType(center, center, MapInfo.POLICE_STATION);
+        mapInfo.setPoliceStationPosition("("+center+","+center+")");
     }
 
     @Override
