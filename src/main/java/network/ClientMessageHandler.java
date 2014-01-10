@@ -1,6 +1,7 @@
 package network;
 
 import org.quickserver.net.server.ClientCommandHandler;
+import org.quickserver.net.server.ClientData;
 import org.quickserver.net.server.ClientHandler;
 
 import java.io.IOException;
@@ -30,8 +31,8 @@ public class ClientMessageHandler extends Observable implements ClientCommandHan
         this.handler = handler;
     }
 
-    public ClientInfo getClientInfo(){
-        return (ClientInfo)handler.getClientData();
+    public ClientData getClientData(){
+        return handler.getClientData();
     }
 
 

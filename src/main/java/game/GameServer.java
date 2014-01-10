@@ -6,14 +6,11 @@ import network.Server;
 import org.apache.commons.cli.*;
 import org.quickserver.net.AppException;
 
-
 public class GameServer {
     MapGenerator mapGenerator;
-    MapInfo mapInfo;
     Server  server;
 
     public void init(){
-//        mapGenerator = new TextMapLoaderGenerator("src/main/resources/m1", new MapInfo());
         MapInfo mapInfo = new MapInfo();
         mapGenerator = new MapAutoGenerator();
         mapGenerator.setMapInfo(mapInfo);
@@ -23,6 +20,7 @@ public class GameServer {
 
         server = new Server();
         server.setClientCommandHandler("network.ClientMessageHandler");
+        server.setClientData("game.PlayerData");
         server.setPort(4321);
 
         realistAllHandlers();
