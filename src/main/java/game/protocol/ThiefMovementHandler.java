@@ -14,7 +14,6 @@ public class ThiefMovementHandler implements ProtocolMessageHandler {
             return false;
         }
 
-        System.out.println("ThiefMovementHandler " + command);
         return true;
     }
 }

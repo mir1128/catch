@@ -1,5 +1,6 @@
 package game.protocol;
 
+import game.PlayersDataHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
 import network.SpecialMessageID;
@@ -15,6 +16,7 @@ public class WelcomeOnConnectHandler implements ProtocolMessageHandler {
             jsonObject.put("Msg", "welcome");
 
             clientMessageHandler.sendClientMessage(jsonObject.toString());
+
             return true;
         }
         return false;
