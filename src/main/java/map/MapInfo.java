@@ -1,5 +1,10 @@
 package map;
 
+import game.Coordinate;
+import util.CoordinateConverter;
+
+import java.util.Vector;
+
 public class MapInfo {
     public final static int POLICE_STATION = 1;
     public final static int BANK = 2;
@@ -96,5 +101,67 @@ public class MapInfo {
 
     private static String cellToString(int row, int column){
         return "[" + row + "," + column + "]";
+    }
+
+    public boolean isMovementValid(String currentPosition, String movement, int distance) {
+        Coordinate current = CoordinateConverter.string2Value(currentPosition);
+        Coordinate target = CoordinateConverter.string2Value(movement);
+
+        return isMovementValid(current, target, distance);
+    }
+
+    private boolean isMovementValid(Coordinate current, Coordinate target, int distance){
+
+        int rt = target.getRow();
+        int ct = target.getColumn();
+
+        Vector<Coordinate> surrounds = new Vector<Coordinate>();
+        surrounds.add(current);
+        while(distance > 0 && !surrounds.isEmpty()){
+            Coordinate cur= surrounds.get(0);
+            int r = cur.getRow();
+            int c = cur.getColumn();
+            surrounds.remove(0);
+
+            if (isValid(r, c + 1)) {
+                if (cells[r][c].isEast() && cells[r][c + 1].isWest()) {
+                    if (r == rt && c + 1 == ct) {
+                        return true;
+                    }
+                    surrounds.add(new Coordinate(r, c + 1));
+                }
+            }
+
+            if (isValid(r+1, c)){
+                if (cells[r][c].isSouth() && cells[r+1][c].isNorth()){
+                    if (r+1 == rt && c == ct){
+                        return true;
+                    }
+                    surrounds.add(new Coordinate(r+1, c));
+                }
+            }
+
+            if (isValid(r, c-1)){
+                if (cells[r][c].isWest() && cells[r][c-1].isEast()){
+                    if (r == rt && c-1 == ct){
+                        return true;
+                    }
+                    surrounds.add(new Coordinate(r, c-1));
+                }
+            }
+
+            if (isValid(r-1, c)){
+                if (cells[r][c].isNorth() && cells[r-1][c].isSouth()){
+                    if (r-1 == rt && c == ct){
+                        return true;
+                    }
+                    surrounds.add(new Coordinate(r-1, c));
+                }
+            }
+
+            --distance;
+        }
+
+        return false;
     }
 }

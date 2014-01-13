@@ -1,6 +1,5 @@
 package game.protocol;
 
-import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
 import network.SpecialMessageID;
 

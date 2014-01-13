@@ -3,11 +3,12 @@ package game.protocol;
 import game.GameRoleConfig;
 import game.PlayerData;
 import game.PlayersDataHolder;
+import game.logic.GameProcessor;
 import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
 
-public class PlayerIDInformationHandler implements ProtocolMessageHandler {
+public class PlayerIDInformationHandler implements ProtocolMessageHandler{
     public static final String MsgID = "001";
     public static final String ReplyID = "101";
 
@@ -19,10 +20,13 @@ public class PlayerIDInformationHandler implements ProtocolMessageHandler {
         }
         String playerID = (String)jsonObject.get("Msg");
 
+        GameProcessor.getInstance().setRoundFinished(playerID);
+
         JSONObject replyObject = buildReplyMessage((String) jsonObject.get("Msg"));
         fillPlayerData(playerID, (JSONObject) replyObject.get("Msg"), clientMessageHandler);
 
         clientMessageHandler.sendClientMessage(replyObject.toString());
+
         return true;
     }
 
@@ -45,18 +49,22 @@ public class PlayerIDInformationHandler implements ProtocolMessageHandler {
         return replyObject;
     }
 
-    private void fillPlayerData(String playerID, JSONObject msgObject, ClientMessageHandler clientMessageHandler) {
-        PlayerData playerData = (PlayerData) clientMessageHandler.getClientData();
-
-        boolean isPolice = msgObject.get("role").equals("police");
-        playerData.setRole(isPolice?PlayerData.POLICE : PlayerData.THIEF);
-        playerData.setPosition((String) (isPolice? msgObject.get("police_station"): msgObject.get("thief_position")));
-    }
-
     private void fillMapInfo(JSONObject msgObject) {
         msgObject.put("size", MapHolder.getInstance().getMapInfo().getMapSize());
         msgObject.put("police_station", MapHolder.getInstance().getMapInfo().getPoliceStationPosition());
         msgObject.put("thief_position", MapHolder.getInstance().getMapInfo().getThiefPosition());
         msgObject.put("nodes", MapHolder.getInstance().getMapInfo().toMazeMap());
     }
+
+    private void fillPlayerData(String playerID, JSONObject msgObject, ClientMessageHandler clientMessageHandler) {
+        PlayerData playerData = (PlayerData) clientMessageHandler.getClientData();
+
+        boolean isPolice = msgObject.get("role").equals("police");
+        playerData.setRole(isPolice?PlayerData.POLICE : PlayerData.THIEF);
+        playerData.setPosition((String) (isPolice? msgObject.get("police_station"): msgObject.get("thief_position")));
+        playerData.setPlayerID(playerID);
+        PlayersDataHolder.getInstance().addPlayerData(playerID, clientMessageHandler);
+    }
+
+
 }

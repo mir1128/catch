@@ -1,5 +1,6 @@
 package game;
 
+import game.logic.GameProcessor;
 import game.protocol.*;
 import map.*;
 import network.Server;
@@ -28,6 +29,7 @@ public class GameServer {
 
     public void  gameStart() throws AppException {
         server.startServer();
+        GameProcessor.getInstance().startTimer();
     }
 
     private void realistAllHandlers(){

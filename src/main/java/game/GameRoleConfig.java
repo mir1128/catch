@@ -35,6 +35,4 @@ public class GameRoleConfig {
     public void addThiefPlayerID(String t) {
         this.thief = t;
     }
-
-
 }
