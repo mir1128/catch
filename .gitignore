@@ -4,5 +4,5 @@
 *.class
 .gradle*
 /out*
-/build*
 mir1128git*
+build/
