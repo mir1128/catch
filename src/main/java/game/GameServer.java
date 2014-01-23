@@ -22,6 +22,8 @@ public class GameServer {
         server = new Server();
         server.setClientCommandHandler("network.ClientMessageHandler");
         server.setClientData("game.PlayerData");
+        server.setTimeout(1000*60*10);
+        server.setTimeoutMsg("chao shi le");
         server.setPort(4321);
 
         realistAllHandlers();

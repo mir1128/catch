@@ -162,12 +162,12 @@ public class GameProcessor {
     }
 
     public void startTimer(){
-        timer.schedule(new TimeoutChecker(), TIME_ROUND);
+//        timer.schedule(new TimeoutChecker(), TIME_ROUND);
     }
 
     public void resetTimer(){
-        timer.cancel();
-        timer.schedule(new TimeoutChecker(), TIME_ROUND);
+//        timer.cancel();
+//        timer.schedule(new TimeoutChecker(), TIME_ROUND);
     }
 
     public void startPoliceTimer(){

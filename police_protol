@@ -36,8 +36,8 @@ MsgID:001
 content: C —— S :  playerID                                                                          001
 Details:
 {
-    "MsgID" : 001,
-    "Msg"   : 1001
+    "MsgID" : "001",
+    "Msg"   : "1001"
 }
 
 

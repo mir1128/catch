@@ -20,8 +20,6 @@ public class PlayerIDInformationHandler implements ProtocolMessageHandler{
         }
         String playerID = (String)jsonObject.get("Msg");
 
-        GameProcessor.getInstance().setRoundFinished(playerID);
-
         JSONObject replyObject = buildReplyMessage((String) jsonObject.get("Msg"));
         fillPlayerData(playerID, (JSONObject) replyObject.get("Msg"), clientMessageHandler);
 
