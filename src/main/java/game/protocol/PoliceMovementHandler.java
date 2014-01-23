@@ -53,12 +53,10 @@ public class PoliceMovementHandler implements ProtocolMessageHandler, GameProces
         }
         msgObject.put("bank", bankInfo);
 
-        msgObject.put("trace", GameProcessor.getInstance().getThiefTrace());
-        GameProcessor.getInstance().setThiefTrace(null);
-
-        replyObject.put("Msg", msgObject);
         Map<String, ClientMessageHandler> policeData = PlayersDataHolder.getInstance().getPoliceHandlers();
         for (Map.Entry<String, ClientMessageHandler> e : policeData.entrySet()){
+            msgObject.put("insight", GameProcessor.getInstance().getPoliceInsight(e.getKey()));
+            replyObject.put("Msg", msgObject);
             e.getValue().sendClientMessage(replyObject.toString());
         }
     }
