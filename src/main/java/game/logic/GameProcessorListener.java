@@ -1,5 +1,5 @@
 package game.logic;
 
-public interface GameProcessofListener {
+public interface GameProcessorListener {
     void onRoundFinished();
 }

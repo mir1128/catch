@@ -65,6 +65,4 @@ public class PlayerIDInformationHandler implements ProtocolMessageHandler{
         playerData.setPlayerID(playerID);
         PlayersDataHolder.getInstance().addPlayerData(playerID, clientMessageHandler);
     }
-
-
 }

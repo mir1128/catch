@@ -23,6 +23,23 @@ public class PlayerData implements ClientData {
 
     private String  position;
 
+    private PoliceStatusSwitcher   policeStatusSwitcher;
+
+    public void setPoliceNextStatus(){
+        if (role == POLICE){
+            policeStatusSwitcher.nextStatus();
+        }
+    }
+
+    public int getPoliceCurrentStatus() throws Exception {
+        if (role == POLICE){
+            return policeStatusSwitcher.getCurrentStatus();
+        }else {
+            throw new Exception();
+        }
+    }
+
+
     public void setPlayerID(String playerID) {
         this.playerID = playerID;
     }

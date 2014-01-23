@@ -1,5 +1,6 @@
 package map;
 
+import java.util.Map;
 import java.util.Random;
 
 import static view.MapViewer.display;
@@ -44,12 +45,16 @@ public class MapAutoGenerator implements MapGenerator{
 
     private void generateBankPosition() {
         int n = mapInfo.getMapSize();
+        Map<String, Integer> bankInfo = mapInfo.getBankInfo();
         int rowStep = n/4;
         int columnStep = n/6;
 
         for (int x = 0; x < 2; ++x){
             for (int y = 0; y < 3; ++y){
-                mapInfo.setCellType(rowStep + x*(n/2), columnStep+y*(n/3), MapInfo.BANK);
+                int row = rowStep + x*(n/2);
+                int column = columnStep+y*(n/3);
+                mapInfo.setCellType(row, column, MapInfo.BANK);
+                bankInfo.put("("+ row + column +")", 1000);
             }
         }
     }
@@ -116,7 +121,7 @@ public class MapAutoGenerator implements MapGenerator{
         MapInfo mapInfo = new MapInfo();
         MapGenerator mapGenerator = new MapAutoGenerator();
         mapGenerator.setMapInfo(mapInfo);
-        mapGenerator.generate(50);
+        mapGenerator.generate(25);
 
         display(mapInfo);
 

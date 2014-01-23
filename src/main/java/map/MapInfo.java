@@ -3,15 +3,27 @@ package map;
 import game.Coordinate;
 import util.CoordinateConverter;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 public class MapInfo {
     public final static int POLICE_STATION = 1;
     public final static int BANK = 2;
+    private Cell    cells[][];
+
+    private String policeStationPosition;
+    private String thiefPosition;
+
+    private Map<String, Integer> bankInfo = new HashMap<String, Integer>();
+
     public final static int THIEF_START = 3;
 
-    private Cell    cells[][];
     private int N;
+
+    public Map<String, Integer> getBankInfo() {
+        return bankInfo;
+    }
 
     public String getPoliceStationPosition() {
         return policeStationPosition;
@@ -28,9 +40,6 @@ public class MapInfo {
     public void setThiefPosition(String thiefPosition) {
         this.thiefPosition = thiefPosition;
     }
-
-    private String policeStationPosition;
-    private String thiefPosition;
 
     public void setCellType(int row, int column, int character){
         cells[row][column].setCharacter(character);
