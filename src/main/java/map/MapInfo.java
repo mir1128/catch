@@ -126,11 +126,13 @@ public class MapInfo {
 
         Vector<Coordinate> surrounds = new Vector<Coordinate>();
         surrounds.add(current);
+        int layerPoints = 1;
         while(distance > 0 && !surrounds.isEmpty()){
             Coordinate cur= surrounds.get(0);
             int r = cur.getRow();
             int c = cur.getColumn();
             surrounds.remove(0);
+            --layerPoints;
 
             if (isValid(r, c + 1)) {
                 if (cells[r][c].isEast() && cells[r][c + 1].isWest()) {
@@ -168,9 +170,51 @@ public class MapInfo {
                 }
             }
 
-            --distance;
+            if (layerPoints == 0){
+                --distance;
+                layerPoints = surrounds.size();
+            }
         }
 
         return false;
+    }
+
+    public Vector<String> getInsight(String position, int trafficType) {
+        Vector<Coordinate> surrounds = new Vector<Coordinate>();
+        surrounds.add(CoordinateConverter.string2Value(position));
+
+        int layerPoints = 1;
+        while (trafficType > 0 && !surrounds.isEmpty()){
+            --layerPoints;
+            Coordinate cur= surrounds.get(0);
+            int r = cur.getRow();
+            int c = cur.getColumn();
+
+            if (isValid(r, c + 1)) {
+                surrounds.add(new Coordinate(r, c + 1));
+            }
+
+            if (isValid(r+1, c)){
+                surrounds.add(new Coordinate(r+1, c));
+            }
+
+            if (isValid(r, c-1)){
+                surrounds.add(new Coordinate(r, c-1));
+            }
+
+            if (isValid(r-1, c)){
+                surrounds.add(new Coordinate(r-1, c));
+            }
+            if (layerPoints == 0){
+                layerPoints = surrounds.size();
+                trafficType--;
+            }
+        }
+
+        Vector<String> result = new Vector<String>();
+        for (Coordinate c : surrounds){
+            result.add(CoordinateConverter.value2String(c));
+        }
+        return result;
     }
 }

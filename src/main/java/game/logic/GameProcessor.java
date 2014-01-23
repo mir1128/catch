@@ -23,7 +23,7 @@ public class GameProcessor {
     private Map<String, String> policeProposalMessage = new HashMap<String, String>();
     private Map<String, String> policeVoteMessage = new HashMap<String, String>();
 
-    private Map<Integer, String> thiefTrace;
+    private Map<Integer, String> thiefTrace = new HashMap<Integer, String>();
 
     private int currentRound = 0;
 
@@ -44,8 +44,33 @@ public class GameProcessor {
         this.thiefTrace.put(getCurrentRound(), thiefTrace);
     }
 
-    public String getPoliceInsight(String policeID){
+    public Map<String, String> getPoliceInsight(String policeID){
+        PlayerData playerData = PlayersDataHolder.getInstance().getPlayerData(policeID);
+        if (playerData.getRole() != PlayerData.POLICE){
+            return null;
+        }
 
+        Map<String, String> result = new HashMap<String, String>();
+        Vector<String> policeInsight = MapHolder.getInstance().getMapInfo().getInsight(playerData.getPosition(), playerData.getTrafficType());
+        for (int i = 0; i < policeInsight.size(); ++i){
+            if (PlayersDataHolder.getInstance().getThiefData().getPosition().equals(policeInsight.get(i))){
+                result.put(policeInsight.get(i), "thief");
+            }else if (isTraceFounded(policeInsight.get(i))){
+                result.put(policeInsight.get(i), "trace");
+            }else {
+                result.put(policeInsight.get(i), "null");
+            }
+        }
+        return result;
+    }
+
+    private boolean isTraceFounded(String position) {
+        for (Map.Entry<Integer, String> e: thiefTrace.entrySet()){
+            if (e.getValue().equals(position)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void registerGameProcessorListener(GameProcessorListener gameProcessorListener){
