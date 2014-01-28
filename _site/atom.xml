@@ -4,13 +4,111 @@
  <title>Jekyll Bootstrap</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2014-01-28T09:55:32+08:00</updated>
+ <updated>2014-01-28T10:09:17+08:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>Name Lastname</name>
    <email>blah@email.test</email>
  </author>
 
+ 
+ <entry>
+   <title>schedule</title>
+   <link href="http://username.github.io/2014/01/28/schedule"/>
+   <updated>2014-01-28T00:00:00+08:00</updated>
+   <id>http://username.github.io/2014/01/28/schedule</id>
+   <content type="html">&lt;h1 id=&quot;c_workshop_&quot;&gt;c++ workshop 日程表&lt;/h1&gt;
+
+&lt;h2 id=&quot;1&quot;&gt;阶段1&lt;/h2&gt;
+
+&lt;h3 id=&quot;__&quot;&gt;目标 : 可以与服务器交互(通过手动发送移动消息看到角色在地图上移动)&lt;/h3&gt;
+&lt;table border='1'&gt;
+		        &lt;tr&gt;
+			        &lt;td&gt;step1&lt;/td&gt;
+			        &lt;td&gt;IDE, gtest, gmock&lt;/td&gt;
+			        &lt;td&gt;过年前&lt;/td&gt;
+		        &lt;/tr&gt;
+		        &lt;tr&gt;
+			        &lt;td&gt;step2&lt;/td&gt;
+			        &lt;td&gt;c++基础，STL, scons&lt;/td&gt;
+			        &lt;td&gt;待定&lt;/td&gt;
+		        &lt;/tr&gt;
+		        &lt;tr&gt;
+			        &lt;td&gt;step3&lt;/td&gt;
+			        &lt;td&gt;socket, 演示收发消息&lt;/td&gt;
+			        &lt;td&gt;待定&lt;/td&gt;
+		        &lt;/tr&gt;
+		        &lt;tr&gt;
+			        &lt;td&gt;step4&lt;/td&gt;
+			        &lt;td&gt;用键盘控制角色在地图上移动&lt;/td&gt;
+			        &lt;td&gt;待定&lt;/td&gt;
+		        &lt;/tr&gt;
+&lt;/table&gt;
+&lt;h2 id=&quot;2&quot;&gt;阶段2&lt;/h2&gt;
+
+&lt;h3 id=&quot;__pk&quot;&gt;目标 : 客户端可用,可以相互PK&lt;/h3&gt;
+&lt;table border='1'&gt;
+		        &lt;tr&gt;
+			        &lt;td&gt;step1&lt;/td&gt;
+			        &lt;td&gt;贼可以找到银行，能看到贼在地图上移动&lt;/td&gt;
+			        &lt;td&gt;待定&lt;/td&gt;
+		        &lt;/tr&gt;
+		        &lt;tr&gt;
+			        &lt;td&gt;step2&lt;/td&gt;
+			        &lt;td&gt;警察可以在各个银行之间巡逻&lt;/td&gt;
+			        &lt;td&gt;待定&lt;/td&gt;
+		        &lt;/tr&gt;
+		        &lt;tr&gt;
+			        &lt;td&gt;step3&lt;/td&gt;
+			        &lt;td&gt;警察之间有协作，多个警察有不同的行为&lt;/td&gt;
+			        &lt;td&gt;待定&lt;/td&gt;
+		        &lt;/tr&gt;
+&lt;/table&gt;
+&lt;h3 id=&quot;35session&quot;&gt;年前完成环境设置，年后每周3，5中午session&lt;/h3&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>appcode gtest</title>
+   <link href="http://username.github.io/2014/01/28/appcode-gtest"/>
+   <updated>2014-01-28T00:00:00+08:00</updated>
+   <id>http://username.github.io/2014/01/28/appcode-gtest</id>
+   <content type="html">&lt;h1 id=&quot;1_boost&quot;&gt;1. 安装boost&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;brew install boost&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;2_gtest&quot;&gt;2. 编译gtest&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code&gt;1. unzip gtest-1.6.0.zip
+1. cd gtest-1.6.0           
+1. ./configure          
+1. make                 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在lib目录下生成了两个文件,还有一个隐藏目录.libs&lt;/p&gt;
+
+&lt;h1 id=&quot;3_appcode_&quot;&gt;3. 新建一个appcode 命令行程序&lt;/h1&gt;
+
+&lt;h1 id=&quot;4_boostgtest&quot;&gt;4. 添加boost库文件和gtest库文件&lt;/h1&gt;
+
+&lt;p&gt;右键点击工程-》add-》FrameWorks and Libraries 添加gtest库和boost库 &lt;strong&gt;(boost库所有dylib都加上，gtest可以只加libgtest.a和libgtest.0.dylib)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;5_&quot;&gt;5. 设置头文件路径和库文件路径&lt;/h1&gt;
+
+&lt;p&gt;&lt;code&gt;command+;&lt;/code&gt; -&amp;gt; &lt;code&gt;Header Search Path&lt;/code&gt; 添加以下路径（根据自己机器实际路径填写）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/Users/twer/Downloads/gtest-1.6.0/include
+/usr/local/Cellar/boost/1.55.0/include   
+/usr/local/Cellar/boost/1.55.0/include/boost
+/usr/local/Cellar/boost/1.55.0/include/boost/tr1 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在Library Search Paths添加以下路径&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/Users/twer/Downloads/gtest-1.6.0/lib/.libs 
+/usr/local/Cellar/boost/1.55.0/lib &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;6_&quot;&gt;6. 写一个被测试函数&lt;/h1&gt;
+
+&lt;p&gt;用gtest测试Foo alt + shift + f10 编译运行。&lt;/p&gt;</content>
+ </entry>
  
  <entry>
    <title>Jekyll Introduction</title>
