@@ -1,1 +1,4 @@
 .gradle/*
+*.ipr
+*.iws
+*.iml
