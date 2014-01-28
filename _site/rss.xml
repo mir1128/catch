@@ -5,8 +5,8 @@
         <description>Jekyll Bootstrap - Name Lastname</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2014-01-28T10:09:17+08:00</lastBuildDate>
-        <pubDate>2014-01-28T10:09:17+08:00</pubDate>
+        <lastBuildDate>2014-01-28T10:12:01+08:00</lastBuildDate>
+        <pubDate>2014-01-28T10:12:01+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -74,9 +74,9 @@
 &lt;h1 id=&quot;2_gtest&quot;&gt;2. 编译gtest&lt;/h1&gt;
 
 &lt;pre&gt;&lt;code&gt;1. unzip gtest-1.6.0.zip
-1. cd gtest-1.6.0           
-1. ./configure          
-1. make                 &lt;/code&gt;&lt;/pre&gt;
+2. cd gtest-1.6.0           
+3. ./configure          
+4. make                 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;在lib目录下生成了两个文件,还有一个隐藏目录.libs&lt;/p&gt;
 
