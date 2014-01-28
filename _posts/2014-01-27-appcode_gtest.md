@@ -10,7 +10,8 @@ title: appcode下gtest环境搭建
 	1. unzip gtest-1.6.0.zip
 	2. cd gtest-1.6.0           
 	3. ./configure          
-    4. make                 
+	4. make                 
+
 在lib目录下生成了两个文件,还有一个隐藏目录.libs
 
 #3. 新建一个appcode 命令行程序
