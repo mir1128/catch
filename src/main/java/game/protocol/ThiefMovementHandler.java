@@ -2,15 +2,14 @@ package game.protocol;
 
 import game.PlayerData;
 import game.PlayersDataHolder;
-import game.logic.GameProcessorListener;
-import game.logic.GameProcessor;
+import game.logic.GameDataListener;
 import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
 
 import java.util.Map;
 
-public class ThiefMovementHandler implements ProtocolMessageHandler, GameProcessorListener {
+public class ThiefMovementHandler implements ProtocolMessageHandler, GameDataListener {
     private static final String MsgID = "201";
     private static final String ReplyID = "401";
 

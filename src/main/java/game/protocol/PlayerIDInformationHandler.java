@@ -3,7 +3,7 @@ package game.protocol;
 import game.GameRoleConfig;
 import game.PlayerData;
 import game.PlayersDataHolder;
-import game.logic.GameProcessor;
+import game.logic.GameDataCenter;
 import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
@@ -62,5 +62,6 @@ public class PlayerIDInformationHandler implements ProtocolMessageHandler{
         playerData.setPosition((String) (isPolice? msgObject.get("police_station"): msgObject.get("thief_position")));
         playerData.setPlayerID(playerID);
         PlayersDataHolder.getInstance().addPlayerData(playerID, clientMessageHandler);
+        GameDataCenter.getInstance().setPlayerIDFinished(playerID);
     }
 }

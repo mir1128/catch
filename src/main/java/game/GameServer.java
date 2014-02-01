@@ -1,6 +1,6 @@
 package game;
 
-import game.logic.GameProcessor;
+import game.logic.GameProcessorThread;
 import game.protocol.*;
 import map.*;
 import network.Server;
@@ -50,6 +50,10 @@ public class GameServer {
 
         GameServer gameServer = new GameServer();
         gameServer.init();
+
+        GameProcessorThread gameProcessorThread = new GameProcessorThread();
+        gameProcessorThread.start();
+
 
         try {
             gameServer.gameStart();

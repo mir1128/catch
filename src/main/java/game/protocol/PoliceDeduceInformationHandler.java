@@ -1,9 +1,7 @@
 package game.protocol;
 
-import game.GameRoleConfig;
 import game.PlayerData;
 import game.PlayersDataHolder;
-import game.logic.GameProcessor;
 import game.logic.PoliceStepFinishedListener;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;

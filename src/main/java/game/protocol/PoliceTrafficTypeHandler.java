@@ -1,12 +1,8 @@
 package game.protocol;
 
 import game.PlayerData;
-import game.PlayersDataHolder;
-import game.logic.GameProcessor;
-import game.logic.GameProcessorListener;
 import game.logic.PoliceStepFinishedListener;
 import map.MapHolder;
-import map.MapInfo;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
 
