@@ -25,7 +25,7 @@ public class GameProcessorThread extends Thread {
 
     private void waitAndProcess(int status) throws InterruptedException {
         if (isTimeOut()){
-                GameDataCenter.getInstance().processTimeout(isPoliceOnlyStep(status));
+            GameDataCenter.getInstance().processTimeout(isPoliceOnlyStep(status));
         }
 
         GameDataCenter.getInstance().sendCollectionMessageToAllPlayers(status, isPoliceOnlyStep(status));

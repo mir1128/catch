@@ -2,6 +2,8 @@ package game.logic;
 
 import game.PlayerData;
 import game.PlayersDataHolder;
+import map.MapHolder;
+import map.MapInfo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -76,6 +78,13 @@ public class GameDataCenter {
                 listener.onRoundFinished(status);
             }
         }
+        resetFinishInformation();
+    }
+
+    private void resetFinishInformation() {
+        for (Map.Entry<String, PlayerData> e : PlayersDataHolder.getInstance().getPlayerData().entrySet()){
+            e.getValue().setFinished(false);
+        }
     }
 
     public synchronized void setPlayerFinished(String playerID, boolean isPoliceStep) {
@@ -111,11 +120,45 @@ public class GameDataCenter {
     }
 
     public synchronized void setPlayerMovement(String playerID, String movement) {
+        if (isMovementValid(playerID, movement)){
+            updatePlayerPosition(playerID, movement);
 
-
+            if (isBankRobbed(playerID, movement)){
+                updateBankInfo(movement, 0);
+            }
+        }
     }
 
     public synchronized Object getPoliceInsight(String key) {
         return null;
+    }
+
+    private boolean isMovementValid(String playerID, String movement) {
+        String currentPosition = PlayersDataHolder.getInstance().getPlayerData(playerID).getPosition();
+        int trafficType = PlayersDataHolder.getInstance().getPlayerData(playerID).getTrafficType();
+
+        MapInfo mapInfo = MapHolder.getInstance().getMapInfo();
+        return mapInfo.isMovementValid(currentPosition, movement, trafficType);
+    }
+
+    private void updatePlayerPosition(String playerID, String movement) {
+        PlayersDataHolder.getInstance().getPlayerData(playerID).setPosition(movement);
+    }
+
+    private boolean isBankRobbed(String playerID, String movement) {
+        if (playerID != PlayersDataHolder.getInstance().getThiefID()){
+            return false;
+        }
+
+        Map<String, Integer> bankInfo = MapHolder.getInstance().getMapInfo().getBankInfo();
+        if (bankInfo.keySet().contains(movement)){
+            return true;
+        }
+        return false;
+    }
+
+    private void updateBankInfo(String bankPosition, int money) {
+        Map<String, Integer> bankInfo = MapHolder.getInstance().getMapInfo().getBankInfo();
+        bankInfo.put(bankPosition, money);
     }
 }
