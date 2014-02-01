@@ -2,6 +2,7 @@ package game.protocol;
 
 import game.PlayerData;
 import game.PlayersDataHolder;
+import game.logic.GameDataCenter;
 import game.logic.PoliceStepFinishedListener;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
@@ -13,7 +14,7 @@ public class PoliceDeduceInformationHandler implements ProtocolMessageHandler, P
     private static final String ReplyID = "103";
 
     public PoliceDeduceInformationHandler() {
-        GameProcessor.getInstance().registerPoliceListeners(this);
+        GameDataCenter.getInstance().registerPoliceListener(this);
     }
 
     @Override
@@ -25,8 +26,8 @@ public class PoliceDeduceInformationHandler implements ProtocolMessageHandler, P
 
         String deduceMessage = jsonObject.getString("Msg");
         PlayerData playerData = (PlayerData) clientMessageHandler.getClientData();
-        GameProcessor.getInstance().setPlayerDeduceData(playerData.getPlayerID(), deduceMessage);
-        GameProcessor.getInstance().setPoliceStepFinished(playerData.getPlayerID());
+        GameDataCenter.getInstance().setPlayerDeduceData(playerData.getPlayerID(), deduceMessage);
+        GameDataCenter.getInstance().setPlayerFinished(playerData.getPlayerID(), true);
 
         return true;
     }
@@ -37,7 +38,7 @@ public class PoliceDeduceInformationHandler implements ProtocolMessageHandler, P
         replyObject.put("MsgID", ReplyID);
 
         JSONObject msgObject = new JSONObject();
-        Map<String, String> deduceMessage = GameProcessor.getInstance().getPoliceDeduceMessage();
+        Map<String, String> deduceMessage = GameDataCenter.getInstance().getPoliceDeduceInformation();
         for (Map.Entry<String, String> e : deduceMessage.entrySet()){
             msgObject.put(e.getKey(), e.getValue());
         }

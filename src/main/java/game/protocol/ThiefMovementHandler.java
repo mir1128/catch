@@ -2,19 +2,20 @@ package game.protocol;
 
 import game.PlayerData;
 import game.PlayersDataHolder;
-import game.logic.GameDataListener;
+import game.logic.AllPlayerStepListener;
+import game.logic.GameDataCenter;
 import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
 
 import java.util.Map;
 
-public class ThiefMovementHandler implements ProtocolMessageHandler, GameDataListener {
+public class ThiefMovementHandler implements ProtocolMessageHandler, AllPlayerStepListener {
     private static final String MsgID = "201";
     private static final String ReplyID = "401";
 
     public ThiefMovementHandler() {
-        GameProcessor.getInstance().registerGameProcessorListener(this);
+        GameDataCenter.getInstance().registerPlayerListener(this);
     }
 
     @Override
@@ -27,14 +28,14 @@ public class ThiefMovementHandler implements ProtocolMessageHandler, GameDataLis
         PlayerData playerData = (PlayerData) clientMessageHandler.getClientData();
 
         String movement = jsonObject.getString("Msg");
-        GameProcessor.getInstance().setPlayerMovement(playerData.getPlayerID(), movement);
-        GameProcessor.getInstance().setRoundFinished(playerData.getPlayerID());
+        GameDataCenter.getInstance().setPlayerMovement(playerData.getPlayerID(), movement);
+        GameDataCenter.getInstance().setPlayerFinished(playerData.getPlayerID(), false);
 
         return true;
     }
 
     @Override
-    public void onRoundFinished() {
+    public void onRoundFinished(int status) {
         JSONObject replyObject = new JSONObject();
         replyObject.put("MsgID", ReplyID);
 

@@ -2,6 +2,7 @@ package game.protocol;
 
 import game.PlayerData;
 import game.PlayersDataHolder;
+import game.logic.GameDataCenter;
 import game.logic.PoliceStepFinishedListener;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
@@ -13,7 +14,7 @@ public class PoliceProposalHandler implements ProtocolMessageHandler, PoliceStep
     private static final String ReplyID = "104";
 
     public PoliceProposalHandler() {
-        GameProcessor.getInstance().registerPoliceListeners(this);
+        GameDataCenter.getInstance().registerPoliceListener(this);
     }
 
     @Override
@@ -26,8 +27,8 @@ public class PoliceProposalHandler implements ProtocolMessageHandler, PoliceStep
         String proposalMessage = jsonObject.getString("Msg");
         PlayerData playerData = (PlayerData) clientMessageHandler.getClientData();
 
-        GameProcessor.getInstance().setPlayerProposalData(playerData.getPlayerID(), proposalMessage);
-        GameProcessor.getInstance().setPoliceStepFinished(playerData.getPlayerID());
+        GameDataCenter.getInstance().setPlayerProposalInformation(playerData.getPlayerID(), proposalMessage);
+        GameDataCenter.getInstance().setPlayerFinished(playerData.getPlayerID(), true);
 
         return true;
     }
@@ -38,7 +39,7 @@ public class PoliceProposalHandler implements ProtocolMessageHandler, PoliceStep
         replyObject.put("MsgID", ReplyID);
 
         JSONObject msgObject = new JSONObject();
-        Map<String, String> deduceMessage = GameProcessor.getInstance().getPoliceProposalMessage();
+        Map<String, String> deduceMessage = GameDataCenter.getInstance().getPoliceProposalInformation();
         for (Map.Entry<String, String> e : deduceMessage.entrySet()){
             msgObject.put(e.getKey(), e.getValue());
         }

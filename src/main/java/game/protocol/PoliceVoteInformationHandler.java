@@ -2,6 +2,7 @@ package game.protocol;
 
 import game.PlayerData;
 import game.PlayersDataHolder;
+import game.logic.GameDataCenter;
 import game.logic.PoliceStepFinishedListener;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
@@ -13,7 +14,7 @@ public class PoliceVoteInformationHandler implements ProtocolMessageHandler, Pol
     private static final String ReplyID = "105";
 
     public PoliceVoteInformationHandler() {
-        GameProcessor.getInstance().registerPoliceListeners(this);
+        GameDataCenter.getInstance().registerPoliceListener(this);
     }
 
     @Override
@@ -26,8 +27,8 @@ public class PoliceVoteInformationHandler implements ProtocolMessageHandler, Pol
         String voteMessage = jsonObject.getString("Msg");
         PlayerData playerData = (PlayerData) clientMessageHandler.getClientData();
 
-        GameProcessor.getInstance().setPlayerVoteData(playerData.getPlayerID(), voteMessage);
-        GameProcessor.getInstance().setPoliceStepFinished(playerData.getPlayerID());
+        GameDataCenter.getInstance().setPlayerVoteInformation(playerData.getPlayerID(), voteMessage);
+        GameDataCenter.getInstance().setPlayerFinished(playerData.getPlayerID(), true);
 
         return true;
     }
@@ -38,7 +39,7 @@ public class PoliceVoteInformationHandler implements ProtocolMessageHandler, Pol
         replyObject.put("MsgID", ReplyID);
 
         JSONObject msgObject = new JSONObject();
-        Map<String, String> deduceMessage = GameProcessor.getInstance().getPoliceVoteMessage();
+        Map<String, String> deduceMessage = GameDataCenter.getInstance().getPoliceVoteInformation();
         for (Map.Entry<String, String> e : deduceMessage.entrySet()){
             msgObject.put(e.getKey(), e.getValue());
         }

@@ -1,5 +1,5 @@
 package game.logic;
 
-public interface GameDataListener {
+public interface AllPlayerStepListener {
     void onRoundFinished(int status);
 }

@@ -19,16 +19,25 @@ public class GameProcessorThread extends Thread {
         }
     }
 
+    private boolean isPoliceOnlyStep(int status){
+        return GameStatus.WAIT_POLICE_TRAFFIC_INFO <= status && status < GameStatus.WAIT_PLAYER_MOVEMENT_INFO;
+    }
+
     private void waitAndProcess(int status) throws InterruptedException {
         if (isTimeOut()){
-            GameDataCenter.getInstance().processTimeout();
+                GameDataCenter.getInstance().processTimeout(isPoliceOnlyStep(status));
         }
-        GameDataCenter.getInstance().sendCollectionMessageToAllPlayers(status);
+
+        GameDataCenter.getInstance().sendCollectionMessageToAllPlayers(status, isPoliceOnlyStep(status));
     }
 
     private boolean isTimeOut() throws InterruptedException {
         long start = System.currentTimeMillis ();
-        GameDataCenter.getInstance().wait(TIMEOUT);
+        GameDataCenter instance = GameDataCenter.getInstance();
+        synchronized (instance){
+            instance.wait(TIMEOUT);
+        }
         return System.currentTimeMillis() - start > TIMEOUT;
     }
+
 }

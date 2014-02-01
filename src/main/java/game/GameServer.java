@@ -31,7 +31,6 @@ public class GameServer {
 
     public void  gameStart() throws AppException {
         server.startServer();
-        GameProcessor.getInstance().startTimer();
     }
 
     private void realistAllHandlers(){

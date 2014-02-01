@@ -2,19 +2,20 @@ package game.protocol;
 
 import game.PlayerData;
 import game.PlayersDataHolder;
-import game.logic.GameDataListener;
+import game.logic.AllPlayerStepListener;
+import game.logic.GameDataCenter;
 import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
 
 import java.util.Map;
 
-public class PoliceMovementHandler implements ProtocolMessageHandler, GameDataListener {
+public class PoliceMovementHandler implements ProtocolMessageHandler, AllPlayerStepListener {
     private static final String MsgID = "305";
     private static final String ReplyID = "106";
 
     public PoliceMovementHandler() {
-        GameProcessor.getInstance().registerGameProcessorListener(this);
+        GameDataCenter.getInstance().registerPlayerListener(this);
     }
 
     @Override
@@ -27,14 +28,14 @@ public class PoliceMovementHandler implements ProtocolMessageHandler, GameDataLi
         PlayerData playerData = (PlayerData) clientMessageHandler.getClientData();
 
         String movement = jsonObject.getString("Msg");
-        GameProcessor.getInstance().setPlayerMovement(playerData.getPlayerID(), movement);
-        GameProcessor.getInstance().setRoundFinished(playerData.getPlayerID());
+        GameDataCenter.getInstance().setPlayerMovement(playerData.getPlayerID(), movement);
+        GameDataCenter.getInstance().setPlayerFinished(playerData.getPlayerID(), false);
 
         return true;
     }
 
     @Override
-    public void onRoundFinished() {
+    public void onRoundFinished(int status) {
         JSONObject replyObject = new JSONObject();
         replyObject.put("MsgID", ReplyID);
 
@@ -54,7 +55,7 @@ public class PoliceMovementHandler implements ProtocolMessageHandler, GameDataLi
 
         Map<String, ClientMessageHandler> policeData = PlayersDataHolder.getInstance().getPoliceHandlers();
         for (Map.Entry<String, ClientMessageHandler> e : policeData.entrySet()){
-            msgObject.put("insight", GameProcessor.getInstance().getPoliceInsight(e.getKey()));
+            msgObject.put("insight", GameDataCenter.getInstance().getPoliceInsight(e.getKey()));
             replyObject.put("Msg", msgObject);
             e.getValue().sendClientMessage(replyObject.toString());
         }
