@@ -18,6 +18,19 @@ public class GameDataCenter {
     private Map<String, String> policeProposalInformation = new HashMap<String, String>();
     private Map<String, String> policeVoteInformation = new HashMap<String, String>();
 
+    private int playerAvailable = 0;
+
+    public int getPlayerAvailable() {
+        return playerAvailable;
+    }
+
+    public void increasePlayerAvailable() {
+        this.playerAvailable++;
+        if (playerAvailable >= 6){
+            this.notifyAll();
+        }
+    }
+
     private GameDataCenter() {}
 
     public synchronized Map<String, String> getPoliceDeduceInformation() {

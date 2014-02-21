@@ -7,6 +7,8 @@ public class GameProcessorThread extends Thread {
     @Override
     public void run(){
         try {
+            waitAllPlayerAvailable();
+
             waitAndProcess(GameStatus.WAIT_PLAYER_ID);
             waitAndProcess(GameStatus.WAIT_POLICE_TRAFFIC_INFO);
             for (int i = 0; i < 200; ++i){
@@ -16,6 +18,13 @@ public class GameProcessorThread extends Thread {
             }
         }catch (InterruptedException e){
             e.printStackTrace();
+        }
+    }
+
+    private void waitAllPlayerAvailable() throws InterruptedException {
+        GameDataCenter instance = GameDataCenter.getInstance();
+        synchronized (instance){
+            instance.wait();
         }
     }
 
@@ -39,5 +48,4 @@ public class GameProcessorThread extends Thread {
         }
         return System.currentTimeMillis() - start > TIMEOUT;
     }
-
 }

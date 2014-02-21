@@ -53,7 +53,6 @@ public class GameServer {
         GameProcessorThread gameProcessorThread = new GameProcessorThread();
         gameProcessorThread.start();
 
-
         try {
             gameServer.gameStart();
         } catch (AppException e) {

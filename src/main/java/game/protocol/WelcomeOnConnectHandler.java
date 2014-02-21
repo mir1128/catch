@@ -1,5 +1,6 @@
 package game.protocol;
 
+import game.logic.GameDataCenter;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
 import network.SpecialMessageID;
@@ -16,6 +17,7 @@ public class WelcomeOnConnectHandler implements ProtocolMessageHandler {
 
             clientMessageHandler.sendClientMessage(jsonObject.toString());
 
+            GameDataCenter.getInstance().increasePlayerAvailable();
             return true;
         }
         return false;
