@@ -3,6 +3,7 @@ package game.protocol;
 import game.PlayerData;
 import game.PlayersDataHolder;
 import game.logic.GameDataCenter;
+import game.logic.GameStatus;
 import game.logic.PoliceStepFinishedListener;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
@@ -19,6 +20,11 @@ public class PoliceDeduceInformationHandler implements ProtocolMessageHandler, P
 
     @Override
     public boolean handle(ClientMessageHandler clientMessageHandler, String command) {
+        if (GameStatus.getInstance().getCurrentGameStatus() != GameStatus.WAIT_POLICE_DEDUCE_INFO){
+            clientMessageHandler.sendClientMessage("status error.");
+            return false;
+        }
+
         JSONObject jsonObject = JSONObject.fromObject(command);
         if (!jsonObject.getString("MsgID").equals(MsgID)){
             return false;

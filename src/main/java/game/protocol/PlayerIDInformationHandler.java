@@ -4,6 +4,7 @@ import game.GameRoleConfig;
 import game.PlayerData;
 import game.PlayersDataHolder;
 import game.logic.GameDataCenter;
+import game.logic.GameStatus;
 import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
@@ -14,6 +15,12 @@ public class PlayerIDInformationHandler implements ProtocolMessageHandler{
 
     @Override
     public boolean handle(ClientMessageHandler clientMessageHandler, String command) {
+        if (GameStatus.getInstance().getCurrentGameStatus() != GameStatus.WAIT_PLAYER_ID)
+        {
+            clientMessageHandler.sendClientMessage("status Error!");
+            return false;
+        }
+
         JSONObject jsonObject = JSONObject.fromObject(command);
         if (!jsonObject.getString("MsgID").equals(MsgID)){
             return false;
@@ -62,6 +69,6 @@ public class PlayerIDInformationHandler implements ProtocolMessageHandler{
         playerData.setPosition((String) (isPolice? msgObject.get("police_station"): msgObject.get("thief_position")));
         playerData.setPlayerID(playerID);
         PlayersDataHolder.getInstance().addPlayerData(playerID, clientMessageHandler);
-        GameDataCenter.getInstance().setPlayerFinished(playerID, false);
+        GameDataCenter.getInstance().increasePlayerAvailable();
     }
 }

@@ -4,6 +4,7 @@ import game.PlayerData;
 import game.PlayersDataHolder;
 import game.logic.AllPlayerStepListener;
 import game.logic.GameDataCenter;
+import game.logic.GameStatus;
 import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
@@ -20,6 +21,11 @@ public class ThiefMovementHandler implements ProtocolMessageHandler, AllPlayerSt
 
     @Override
     public boolean handle(ClientMessageHandler clientMessageHandler, String command) {
+        if (GameStatus.getInstance().getCurrentGameStatus() != GameStatus.WAIT_PLAYER_MOVEMENT_INFO){
+            clientMessageHandler.sendClientMessage("status error.");
+            return false;
+        }
+
         JSONObject jsonObject = JSONObject.fromObject(command);
         if (!jsonObject.getString("MsgID").equals(MsgID)){
             return false;

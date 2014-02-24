@@ -9,13 +9,16 @@ public class GameProcessorThread extends Thread {
         try {
             waitAllPlayerAvailable();
 
+            GameStatus.getInstance().setCurrentGameStatus(GameStatus.WAIT_PLAYER_ID);
             GameDataCenter.getInstance().resetPlayerAvailable();
 
             waitAllPlayerAvailable();
 
+            GameStatus.getInstance().setCurrentGameStatus(GameStatus.WAIT_POLICE_TRAFFIC_INFO);
             waitAndProcess(GameStatus.WAIT_POLICE_TRAFFIC_INFO);
             for (int i = 0; i < 200; ++i){
                 for (int status = GameStatus.WAIT_POLICE_TRACE_INFO; status  <= GameStatus.WAIT_PLAYER_MOVEMENT_INFO; ++status){
+                    GameStatus.getInstance().setCurrentGameStatus(status);
                     waitAndProcess(status);
                 }
             }
