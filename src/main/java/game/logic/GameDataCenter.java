@@ -25,10 +25,16 @@ public class GameDataCenter {
     }
 
     public void increasePlayerAvailable() {
-        this.playerAvailable++;
-        if (playerAvailable >= 6){
-            this.notifyAll();
+        synchronized (this) {
+            this.playerAvailable++;
+            if (playerAvailable >= 6) {
+                this.notifyAll();
+            }
         }
+    }
+
+    public void resetPlayerAvailable(){
+        this.playerAvailable = 0;
     }
 
     private GameDataCenter() {}
