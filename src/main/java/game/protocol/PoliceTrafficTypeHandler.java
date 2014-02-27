@@ -17,14 +17,14 @@ public class PoliceTrafficTypeHandler implements  ProtocolMessageHandler, Police
 
     @Override
     public boolean handle(ClientMessageHandler clientMessageHandler, String command) {
-        if (GameStatus.getInstance().getCurrentGameStatus() != GameStatus.WAIT_POLICE_TRACE_INFO){
-            clientMessageHandler.sendClientMessage("status error.");
-            return false;
-        }
-
         JSONObject jsonObject = JSONObject.fromObject(command);
         if (!jsonObject.getString("MsgID").equals(MsgID)){
             return false;
+        }
+
+        if (GameStatus.getInstance().getCurrentGameStatus() != GameStatus.WAIT_POLICE_TRAFFIC_INFO){
+            clientMessageHandler.sendClientMessage("PoliceTrafficTypeHandler status error. current status is " + GameStatus.getInstance().getCurrentGameStatus());
+            return true;
         }
 
         PlayerData playerData = (PlayerData) clientMessageHandler.getClientData();

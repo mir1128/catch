@@ -1,7 +1,7 @@
 package game.logic;
 
 public class GameProcessorThread extends Thread {
-    private static final int TIMEOUT = 2000*60;
+    private static final int TIMEOUT = 2000*600;
 
 
     @Override

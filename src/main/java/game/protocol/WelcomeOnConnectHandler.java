@@ -11,12 +11,14 @@ public class WelcomeOnConnectHandler implements ProtocolMessageHandler {
 
     @Override
     public boolean handle(ClientMessageHandler clientMessageHandler, String command) {
-        if (GameStatus.getInstance().getCurrentGameStatus() != GameStatus.WAIT_WELCOME){
-            clientMessageHandler.sendClientMessage("status error!");
-            return false;
-        }
 
         if (command.equals(SpecialMessageID.ON_CONNECTED)){
+
+            if (GameStatus.getInstance().getCurrentGameStatus() != GameStatus.WAIT_WELCOME){
+                clientMessageHandler.sendClientMessage("WelcomeOnConnectHandler status error. current status is " + GameStatus.getInstance().getCurrentGameStatus());
+                return true;
+            }
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("MsgID", WelcomeOnConnectHandler.MsgID);
             jsonObject.put("Msg", "welcome");
