@@ -8,7 +8,9 @@ import game.logic.GameStatus;
 import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
+import org.quickserver.net.server.ClientHandler;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class PoliceMovementHandler implements ProtocolMessageHandler, AllPlayerStepListener {
@@ -59,11 +61,15 @@ public class PoliceMovementHandler implements ProtocolMessageHandler, AllPlayerS
         }
         msgObject.put("bank", bankInfo);
 
-        Map<String, ClientMessageHandler> policeData = PlayersDataHolder.getInstance().getPoliceHandlers();
-        for (Map.Entry<String, ClientMessageHandler> e : policeData.entrySet()){
+        Map<String, ClientHandler> policeData = PlayersDataHolder.getInstance().getPoliceHandlers();
+        for (Map.Entry<String, ClientHandler> e : policeData.entrySet()){
             msgObject.put("insight", GameDataCenter.getInstance().getPoliceInsight(e.getKey()));
             replyObject.put("Msg", msgObject);
-            e.getValue().sendClientMessage(replyObject.toString());
+            try {
+                e.getValue().sendClientMsg(replyObject.toString());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }

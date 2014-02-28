@@ -69,7 +69,7 @@ public class PlayerIDInformationHandler implements ProtocolMessageHandler{
         playerData.setRole(isPolice?PlayerData.POLICE : PlayerData.THIEF);
         playerData.setPosition((String) (isPolice? msgObject.get("police_station"): msgObject.get("thief_position")));
         playerData.setPlayerID(playerID);
-        PlayersDataHolder.getInstance().addPlayerData(playerID, clientMessageHandler);
+        PlayersDataHolder.getInstance().addPlayerData(playerID, clientMessageHandler.getHandler());
         GameDataCenter.getInstance().increasePlayerAvailable();
     }
 }

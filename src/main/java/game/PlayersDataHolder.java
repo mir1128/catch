@@ -1,6 +1,7 @@
 package game;
 
 import network.ClientMessageHandler;
+import org.quickserver.net.server.ClientHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map;
 public class PlayersDataHolder {
     private static PlayersDataHolder instance = null;
     private Map<String, PlayerData> playerData = new HashMap<String, PlayerData>();
-    private Map<String, ClientMessageHandler> playerClientHandler = new HashMap<String, ClientMessageHandler>();
+    private Map<String, ClientHandler> playerClientHandler = new HashMap<String, ClientHandler>();
 
     private String thiefID;
 
@@ -21,10 +22,10 @@ public class PlayersDataHolder {
         return instance;
     }
 
-    public void addPlayerData(String playerID, ClientMessageHandler clientMessageHandler){
-        PlayerData data =  (PlayerData)clientMessageHandler.getClientData();
+    public void addPlayerData(String playerID, ClientHandler clientHandler){
+        PlayerData data =  (PlayerData)clientHandler.getClientData();
         playerData.put(playerID, data);
-        playerClientHandler.put(playerID, clientMessageHandler);
+        playerClientHandler.put(playerID, clientHandler);
 
         if (data.getRole() == PlayerData.THIEF){
             this.thiefID = playerID;
@@ -40,7 +41,7 @@ public class PlayersDataHolder {
         return playerData.get(playerID);
     }
 
-    public ClientMessageHandler getClientMessageHandler(String playerID){
+    public ClientHandler getClientMessageHandler(String playerID){
         return playerClientHandler.get(playerID);
     }
 
@@ -48,7 +49,7 @@ public class PlayersDataHolder {
         return playerData.get(thiefID);
     }
 
-    public ClientMessageHandler getThiefHandler(){
+    public ClientHandler getThiefHandler(){
         return playerClientHandler.get(thiefID);
     }
 
@@ -66,9 +67,9 @@ public class PlayersDataHolder {
         return polices;
     }
 
-    public Map<String, ClientMessageHandler> getPoliceHandlers(){
-        Map<String, ClientMessageHandler> polices = new HashMap<String, ClientMessageHandler>();
-        for (Map.Entry<String, ClientMessageHandler> entry : playerClientHandler.entrySet()){
+    public Map<String, ClientHandler> getPoliceHandlers(){
+        Map<String, ClientHandler> polices = new HashMap<String, ClientHandler>();
+        for (Map.Entry<String, ClientHandler> entry : playerClientHandler.entrySet()){
             if (entry.getKey() != thiefID){
                 polices.put(entry.getKey(), entry.getValue());
             }

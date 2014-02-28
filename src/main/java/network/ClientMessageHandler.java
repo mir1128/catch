@@ -31,6 +31,10 @@ public class ClientMessageHandler extends Observable implements ClientCommandHan
         this.handler = handler;
     }
 
+    public ClientHandler getHandler(){
+        return handler;
+    }
+
     public ClientData getClientData(){
         return handler.getClientData();
     }

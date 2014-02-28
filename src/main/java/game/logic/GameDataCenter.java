@@ -89,7 +89,7 @@ public class GameDataCenter {
     public synchronized void sendCollectionMessageToAllPlayers(int status, boolean isPoliceStep) {
         if (isPoliceStep){
             for (PoliceStepFinishedListener policeListener : policeListeners){
-                policeListener.onPoliceStepFinished();
+                policeListener.onPoliceStepFinished(status);
             }
         }
         else {

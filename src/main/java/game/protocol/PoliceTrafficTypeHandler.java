@@ -8,12 +8,19 @@ import game.logic.PoliceStepFinishedListener;
 import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
+import org.quickserver.net.server.ClientHandler;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class PoliceTrafficTypeHandler implements  ProtocolMessageHandler, PoliceStepFinishedListener {
     private static final String MsgID = "301";
+
     private static final String ReplyID = "102";
+
+    public PoliceTrafficTypeHandler() {
+        GameDataCenter.getInstance().registerPoliceListener(this);
+    }
 
     @Override
     public boolean handle(ClientMessageHandler clientMessageHandler, String command) {
@@ -41,7 +48,10 @@ public class PoliceTrafficTypeHandler implements  ProtocolMessageHandler, Police
 
 
     @Override
-    public void onPoliceStepFinished() {
+    public void onPoliceStepFinished(int status) {
+        if (status != GameStatus.WAIT_POLICE_TRAFFIC_INFO){
+            return;
+        }
         JSONObject replyObject = new JSONObject();
         replyObject.put("MsgID", ReplyID);
 
@@ -52,9 +62,13 @@ public class PoliceTrafficTypeHandler implements  ProtocolMessageHandler, Police
 
         replyObject.put("Msg", msgObject);
 
-        Map<String, ClientMessageHandler> policeData = PlayersDataHolder.getInstance().getPoliceHandlers();
-        for (Map.Entry<String, ClientMessageHandler> e : policeData.entrySet()){
-            e.getValue().sendClientMessage(replyObject.toString());
+        Map<String, ClientHandler> policeData = PlayersDataHolder.getInstance().getPoliceHandlers();
+        for (Map.Entry<String, ClientHandler> e : policeData.entrySet()){
+            try {
+                e.getValue().sendClientMsg(replyObject.toString());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }

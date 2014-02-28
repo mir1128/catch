@@ -7,7 +7,9 @@ import game.logic.GameStatus;
 import game.logic.PoliceStepFinishedListener;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
+import org.quickserver.net.server.ClientHandler;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class PoliceProposalHandler implements ProtocolMessageHandler, PoliceStepFinishedListener {
@@ -40,7 +42,11 @@ public class PoliceProposalHandler implements ProtocolMessageHandler, PoliceStep
     }
 
     @Override
-    public void onPoliceStepFinished() {
+    public void onPoliceStepFinished(int status) {
+        if (status != GameStatus.WAIT_POLICE_PROPOSAL_INFO){
+            return;
+        }
+
         JSONObject replyObject = new JSONObject();
         replyObject.put("MsgID", ReplyID);
 
@@ -52,9 +58,13 @@ public class PoliceProposalHandler implements ProtocolMessageHandler, PoliceStep
 
         replyObject.put("Msg", msgObject);
 
-        Map<String, ClientMessageHandler> policeData = PlayersDataHolder.getInstance().getPoliceHandlers();
-        for (Map.Entry<String, ClientMessageHandler> e : policeData.entrySet()){
-            e.getValue().sendClientMessage(replyObject.toString());
+        Map<String, ClientHandler> policeData = PlayersDataHolder.getInstance().getPoliceHandlers();
+        for (Map.Entry<String, ClientHandler> e : policeData.entrySet()){
+            try {
+                e.getValue().sendClientMsg(replyObject.toString());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }

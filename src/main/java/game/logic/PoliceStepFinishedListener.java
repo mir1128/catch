@@ -1,5 +1,5 @@
 package game.logic;
 
 public interface PoliceStepFinishedListener {
-    void onPoliceStepFinished();
+    void onPoliceStepFinished(int status);
 }

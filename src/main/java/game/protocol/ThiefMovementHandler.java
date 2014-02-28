@@ -9,6 +9,7 @@ import map.MapHolder;
 import net.sf.json.JSONObject;
 import network.ClientMessageHandler;
 
+import java.io.IOException;
 import java.util.Map;
 
 public class ThiefMovementHandler implements ProtocolMessageHandler, AllPlayerStepListener {
@@ -61,7 +62,11 @@ public class ThiefMovementHandler implements ProtocolMessageHandler, AllPlayerSt
         msgObject.put("bank", bankInfo);
 
         replyObject.put("Msg", msgObject);
-        PlayersDataHolder.getInstance().getThiefHandler().sendClientMessage(replyObject.toString());
+        try {
+            PlayersDataHolder.getInstance().getThiefHandler().sendClientMsg(replyObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
